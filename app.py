@@ -4,6 +4,15 @@ import pandas as pd
 from datetime import date
 import folium
 from streamlit_folium import st_folium
+from sklearn.cluster import KMeans
+from sentence_transformers import SentenceTransformer, util
+
+
+@st.cache_resource
+def load_nlp_model():
+    return SentenceTransformer("all-MiniLM-L6-v2")
+
+nlp_model = load_nlp_model()
 
 st.title("🏃 AI Running Companion")
 
@@ -136,24 +145,58 @@ else:
         "📈 **Stable performance.** You're maintaining consistency, which is excellent for endurance."
     )
 
-st.header("💬 AI Motivation")
+motivational_library = {
+    "improving": "You're getting faster and stronger — your consistency is paying off.",
+    "fatigue": "It looks like your body may need recovery. Rest is part of training.",
+    "stable": "Steady progress is the foundation of long‑term performance.",
+    "beginner": "Great start! Building habits is more important than speed right now."
+}
 
-if run_frequency >= 6:
-    st.success(
-        "🏆 Outstanding commitment! Your logging shows strong discipline. "
-        "This level of consistency is associated with long‑term performance gains."
-    )
+st.header("🧠 Runner Profile (ML)")
 
-elif run_frequency >= 3:
-    st.info(
-        "👏 Great job staying consistent. You're building a solid running habit — "
-        "keep the rhythm going!"
-    )
+if len(df) >= 4:
+    features = df[["distance", "pace", "effort"]]
+    model = KMeans(n_clusters=2, n_init=10)
+    cluster = model.fit_predict(features)[-1]
 
+    if cluster == 0:
+        st.info("You train with high consistency and moderate effort.")
+    else:
+        st.info("You show performance‑driven training with higher intensity patterns.")
 else:
-    st.info(
-        "🌱 Every runner starts somewhere. Focus on small wins — even one extra run matters."
-    )
+    st.info("More runs needed to identify training style.")
+
+st.header("💬 AI Coach (NLP‑Powered)")
+
+if "runs" in st.session_state and len(st.session_state.runs) > 0:
+    df = pd.DataFrame(st.session_state.runs)
+
+    if pace_trend < -0.3:
+        user_state = "improving"
+    elif pace_trend > 0.3:
+        user_state = "fatigue"
+    elif len(df) <= 2:
+        user_state = "beginner"
+    else:
+        user_state = "stable"
+
+    # NLP similarity
+    user_embedding = nlp_model.encode(user_state, convert_to_tensor=True)
+    best_message = None
+    best_score = -1
+
+    for key, text in motivational_library.items():
+        message_embedding = nlp_model.encode(text, convert_to_tensor=True)
+        score = util.cos_sim(user_embedding, message_embedding)
+
+        if score > best_score:
+            best_score = score
+            best_message = text
+
+    st.success(best_message)
+else:
+    st.info("Log runs to receive AI‑generated coaching insights.")
+
 
     # Motivational message
 if len(df) >= 5 and df["pace"].iloc[-1] < df["pace"].iloc[0]:
@@ -163,10 +206,10 @@ elif len(df) >= 3:
 else:
     st.info("🌱 You're just getting started. Every run counts!")
 
-with st.expander("🧠 How does the AI coach work?"):
+with st.expander("🧠 How does the AI work?"):
     st.write(
-        "The AI coach analyses your recent running patterns, pace trends, and consistency. "
-        "It compares recent runs to identify improvement, stability, or fatigue, and adjusts "
-        "its advice and motivation accordingly. This approach ensures transparency and avoids "
-        "black‑box decision making."
+        "The application uses real machine‑learning and natural‑language processing models. "
+        "A pre‑trained sentence‑embedding model analyses semantic similarity to generate "
+        "context‑aware motivation, while unsupervised clustering identifies training patterns. "
+        "All AI runs locally using open‑source models, ensuring transparency, privacy, and zero cost."
     )
