@@ -47,7 +47,6 @@ if len(st.session_state.runs) > 0:
     st.write(f"Your average pace is **{avg_pace:.2f} min/km**.")
 
     # Motivational message
-
 if len(df) >= 5 and df["pace"].iloc[-1] < df["pace"].iloc[0]:
     st.success("🚀 You're getting faster! Your training is clearly working.")
 elif len(df) >= 3:
