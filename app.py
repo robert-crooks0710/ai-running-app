@@ -61,6 +61,19 @@ selected_distance = st.selectbox(
     [5, 10, 15]
 )
 
+# Create map
+m = folium.Map(location=[52.586, -1.546], zoom_start=13)
+
+for route in routes:
+    if route["distance"] == selected_distance:
+        folium.Marker(
+            location=[route["lat"], route["lon"]],
+            popup=f"{route['name']} - {route['distance']} km",
+            icon=folium.Icon(color="green", icon="info-sign")
+        ).add_to(m)
+
+st_folium(m, width=700, height=450)
+
 # Show data
 if len(st.session_state.runs) > 0:
     df = pd.DataFrame(st.session_state.runs)
