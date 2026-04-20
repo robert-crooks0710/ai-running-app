@@ -43,6 +43,11 @@ if len(st.session_state.runs) > 0:
 
     avg_pace = df["pace"].mean()
 
+    # AI metrics
+    recent_runs = df.tail(3)
+    pace_trend = recent_runs["pace"].iloc[-1] - recent_runs["pace"].iloc[0]
+    run_frequency = len(df)
+
     st.header("🤖 AI Insight")
     st.write(f"Your average pace is **{avg_pace:.2f} min/km**.")
 
