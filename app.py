@@ -50,4 +50,5 @@ if len(st.session_state.runs) > 0:
     if len(df) >= 3:
         st.success("Great consistency! You're building a strong running habit.")
     else:
-        st.info("Nice start! Keep logging runs to unlock deeper insights.
+        st.info("Nice start! Keep logging runs to unlock deeper insights.")
+
