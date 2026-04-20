@@ -48,8 +48,27 @@ if len(st.session_state.runs) > 0:
     pace_trend = recent_runs["pace"].iloc[-1] - recent_runs["pace"].iloc[0]
     run_frequency = len(df)
 
-    st.header("🤖 AI Insight")
-    st.write(f"Your average pace is **{avg_pace:.2f} min/km**.")
+
+st.header("🤖 AI Coaching Insight")
+
+st.write(f"✅ Average pace: **{avg_pace:.2f} min/km**")
+
+if pace_trend < -0.3:
+    st.success(
+        "🚀 **Performance improving!** Your pace has dropped, which means you're running faster. "
+        "This suggests your training load is well balanced."
+    )
+
+elif pace_trend > 0.3:
+    st.warning(
+        "⚠️ **Pace slowing slightly.** This can happen due to fatigue or stress. "
+        "Consider easier runs or a recovery day."
+    )
+
+else:
+    st.info(
+        "📈 **Stable performance.** You're maintaining consistency, which is excellent for endurance."
+    )
 
     # Motivational message
 if len(df) >= 5 and df["pace"].iloc[-1] < df["pace"].iloc[0]:
