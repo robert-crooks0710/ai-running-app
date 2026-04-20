@@ -74,6 +74,29 @@ for route in routes:
 
 st_folium(m, width=700, height=450)
 
+st.header("🤖 Route Recommendation")
+
+if "runs" in st.session_state and len(st.session_state.runs) > 0:
+    average_distance = pd.DataFrame(st.session_state.runs)["distance"].mean()
+
+    if average_distance < 6:
+        st.info(
+            "Based on your logged runs, the **Riverside Easy Loop** is recommended "
+            "to build consistency without overloading."
+        )
+    elif average_distance < 12:
+        st.success(
+            "You're ready for the **Park Endurance Route** to continue improving stamina."
+        )
+    else:
+        st.warning(
+            "The **Hill Challenge** suits your fitness, but ensure adequate recovery."
+        )
+else:
+    st.info(
+        "Log a few runs to unlock personalised route recommendations."
+    )
+
 # Show data
 if len(st.session_state.runs) > 0:
     df = pd.DataFrame(st.session_state.runs)
