@@ -2,6 +2,8 @@
 import streamlit as st
 import pandas as pd
 from datetime import date
+import folium
+from streamlit_folium import st_folium
 
 st.title("🏃 AI Running Companion")
 
@@ -31,6 +33,28 @@ with st.form("run_form"):
         })
         st.success("Run saved!")
 
+st.header("🗺️ Running Routes")
+
+routes = [
+    {
+        "name": "Riverside Easy Loop",
+        "distance": 5,
+        "lat": 52.586,
+        "lon": -1.546
+    },
+    {
+        "name": "Park Endurance Route",
+        "distance": 10,
+        "lat": 52.589,
+        "lon": -1.550
+    },
+    {
+        "name": "Hill Challenge",
+        "distance": 15,
+        "lat": 52.583,
+        "lon": -1.540
+    }
+]
 # Show data
 if len(st.session_state.runs) > 0:
     df = pd.DataFrame(st.session_state.runs)
