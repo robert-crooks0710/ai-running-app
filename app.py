@@ -53,5 +53,3 @@ elif len(df) >= 3:
     st.success("✅ Strong consistency — this is how endurance is built.")
 else:
     st.info("🌱 You're just getting started. Every run counts!")
-``
-
