@@ -70,6 +70,25 @@ else:
         "📈 **Stable performance.** You're maintaining consistency, which is excellent for endurance."
     )
 
+st.header("💬 AI Motivation")
+
+if run_frequency >= 6:
+    st.success(
+        "🏆 Outstanding commitment! Your logging shows strong discipline. "
+        "This level of consistency is associated with long‑term performance gains."
+    )
+
+elif run_frequency >= 3:
+    st.info(
+        "👏 Great job staying consistent. You're building a solid running habit — "
+        "keep the rhythm going!"
+    )
+
+else:
+    st.info(
+        "🌱 Every runner starts somewhere. Focus on small wins — even one extra run matters."
+    )
+
     # Motivational message
 if len(df) >= 5 and df["pace"].iloc[-1] < df["pace"].iloc[0]:
     st.success("🚀 You're getting faster! Your training is clearly working.")
