@@ -97,3 +97,10 @@ elif len(df) >= 3:
 else:
     st.info("🌱 You're just getting started. Every run counts!")
 
+with st.expander("🧠 How does the AI coach work?"):
+    st.write(
+        "The AI coach analyses your recent running patterns, pace trends, and consistency. "
+        "It compares recent runs to identify improvement, stability, or fatigue, and adjusts "
+        "its advice and motivation accordingly. This approach ensures transparency and avoids "
+        "black‑box decision making."
+    )
