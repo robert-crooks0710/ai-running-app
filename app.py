@@ -47,7 +47,11 @@ if len(st.session_state.runs) > 0:
     st.write(f"Your average pace is **{avg_pace:.2f} min/km**.")
 
     # Motivational message
-    if len(df) >= 3:
-        st.success("Great consistency! You're building a strong running habit.")
-    else:
-        st.info("Nice start! Keep logging runs to unlock deeper insights.")
+
+if len(df) >= 5 and df["pace"].iloc[-1] < df["pace"].iloc[0]:
+    st.success("🚀 You're getting faster! Your training is clearly working.")
+elif len(df) >= 3:
+    st.success("✅ Strong consistency — this is how endurance is built.")
+else:
+    st.info("🌱 You're just getting started. Every run counts!")
+``
