@@ -55,6 +55,12 @@ routes = [
         "lon": -1.540
     }
 ]
+
+selected_distance = st.selectbox(
+    "Select preferred route distance (km)",
+    [5, 10, 15]
+)
+
 # Show data
 if len(st.session_state.runs) > 0:
     df = pd.DataFrame(st.session_state.runs)
